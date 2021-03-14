@@ -1,4 +1,3 @@
-
 from pages.base_page import BasePage
 from pages.locators import ProductPageLocators
 
@@ -37,4 +36,3 @@ class ProductPage(BasePage):
         how, where = ProductPageLocators.MESSAGE
         message_is_disappeared = self.is_disappeared(how, where.format(text_message=text), timeout=4)
         assert message_is_disappeared, f'Message with {text} still visible on the page after 4 seconds.'
-
