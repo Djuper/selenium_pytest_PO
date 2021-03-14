@@ -3,8 +3,9 @@ import pytest
 
 
 def test_product_page(browser):
-    link = 'http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-shellcoders-handbook_209/?promo=newYear'
-    product_page = ProductPage(browser, link)
+    product_page_url = 'http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-shellcoders-handbook_209' \
+                       '/?promo=newYear'
+    product_page = ProductPage(browser, product_page_url)
     product_page.open()
     product_page.click_add_to_basket()
     product_page.solve_quiz_and_get_code()
@@ -34,3 +35,31 @@ def test_guest_can_add_product_to_basket(browser, link):
     product_price = product_page.get_product_price()
     product_page.message_should_be_present(f"{product_name} has been added to your basket.")
     product_page.message_should_be_present(f"Your basket total is now {product_price}")
+
+
+@pytest.mark.xfail
+def test_guest_cant_see_success_message_after_adding_product_to_basket(browser):
+    product_page_url = 'http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/'
+    product_page = ProductPage(browser, product_page_url)
+    product_page.open()
+    product_page.click_add_to_basket()
+    product_name = product_page.get_product_name()
+    product_page.message_should_not_be_present(f"{product_name} has been added to your basket.")
+
+
+def test_guest_cant_see_success_message(browser):
+    product_page_url = 'http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/'
+    product_page = ProductPage(browser, product_page_url)
+    product_page.open()
+    product_name = product_page.get_product_name()
+    product_page.message_should_not_be_present(f"{product_name} has been added to your basket.")
+
+
+@pytest.mark.xfail
+def test_message_disappeared_after_adding_product_to_basket(browser):
+    product_page_url = 'http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/'
+    product_page = ProductPage(browser, product_page_url)
+    product_page.open()
+    product_page.click_add_to_basket()
+    product_name = product_page.get_product_name()
+    product_page.message_is_disappeared(f"{product_name} has been added to your basket.")
